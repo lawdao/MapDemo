@@ -13,11 +13,9 @@ import com.amap.api.services.core.LatLonPoint;
 
 public class SearchAddressInfo implements Parcelable {
 
-
     public String addressName;
     public LatLonPoint latLonPoint;
     public boolean isChoose;
-
     public String title;
 
     public SearchAddressInfo(String title, String addressName, boolean isChoose, LatLonPoint latLonPoint) {

@@ -41,12 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         send.setOnClickListener(this);
 
-
         //获取定位信息
         MapUtils mapUtils = new MapUtils();
         mapUtils.getLonLat(this, new MyLonLatListener());
     }
-
 
     class MyLonLatListener implements MapUtils.LonLatListener {
 
@@ -59,14 +57,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
                     latitude = amapLocation.getLatitude();//获取纬度
                     longitude = amapLocation.getLongitude();//获取经度
-
                     cityCode = amapLocation.getCityCode();
-
                     tv_lat.setText("当前纬度：" + latitude);
                     tv_lon.setText("当前经度：" + longitude);
-
                     tv_location.setText("当前位置：" + amapLocation.getAddress());
-
                     tv_city.setText("当前城市：" + amapLocation.getProvince() + "-" + amapLocation.getCity() + "-" + amapLocation.getDistrict() + "-" + amapLocation.getStreet() + "-" + amapLocation.getStreetNum());
 
                     tv_poi.setText("当前位置："+amapLocation.getAoiName());
@@ -86,13 +80,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == send) {
-
             Intent intent = new Intent();
-
             intent.putExtra("longitude", longitude);
             intent.putExtra("latitude", latitude);
             intent.putExtra("cityCode", cityCode);
-
             intent.setClass(this, ShareLocationActivity.class);
             startActivity(intent);
         }

@@ -54,19 +54,14 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
     private LatLng mFinalChoosePosition;
     private ImageView centerImage;
     private Animation centerAnimation;
-
-
     private int currentPage = 0;// 当前页面，从0开始计数
     private PoiSearch.Query query;// Poi查询条件类
     private PoiSearch poiSearch;
     private String city;
-
     private PoiResult poiResult; // poi返回的结果
     private List<PoiItem> poiItems;// poi数据
-
     private ArrayList<SearchAddressInfo> mData = new ArrayList<>();
     public SearchAddressInfo mAddressInfoFirst = null;
-
     private boolean isHandDrag = true;
     private boolean isFirstLoad = true;
     private boolean isBackFromSearch = false;
@@ -76,7 +71,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
     private ImageView search;
     private TextView send;
     private ImageView back;
-
     private static final int SEARCH_ADDDRESS = 1;
 
     @Override
@@ -92,17 +86,11 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         latLonPoint = new LatLonPoint(latitude, longitude);
 
         mapView = (MapView) findViewById(R.id.mapview);
-
         listView = (ListView) findViewById(R.id.listview);
-
         centerImage = (ImageView) findViewById(R.id.center_image);
-
         locationButton = (ImageButton) findViewById(R.id.position_btn);
-
         search = (ImageView) findViewById(R.id.seach);
-
         send = (TextView) findViewById(R.id.send);
-
         back = (ImageView) findViewById(R.id.base_back);
 
         search.setOnClickListener(this);
@@ -114,10 +102,7 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         mapView.onCreate(savedInstanceState);
 
         centerAnimation = AnimationUtils.loadAnimation(this, R.anim.center_anim);
-
-
         addressAdapter = new AddressAdapter(this, mData);
-
         listView.setAdapter(addressAdapter);
 
         listView.setOnItemClickListener(this);
@@ -151,7 +136,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
             //关闭地图缩放按钮 就是那个加号 和减号
             uiSettings.setZoomControlsEnabled(false);
 
-
             aMap.setOnMapClickListener(this);
 
             //对amap添加移动地图事件监听器
@@ -166,20 +150,17 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
             mFinalChoosePosition = locationMarker.getPosition();
         }
 
-
         setMap();
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude()), 20));
     }
 
     private void setMap() {
 
-
         geocoderSearch = new GeocodeSearch(getApplicationContext());
 
         //设置逆地理编码监听
         geocoderSearch.setOnGeocodeSearchListener(this);
     }
-
 
     /**
      * 根据经纬度得到地址
@@ -190,7 +171,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         geocoderSearch.getFromLocationAsyn(query);// 设置同步逆地理编码请求
     }
 
-
     /**
      * 把LatLng对象转化为LatLonPoint对象
      */
@@ -198,14 +178,12 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         return new LatLonPoint(latlon.latitude, latlon.longitude);
     }
 
-
     /**
      * 把LatLonPoint对象转化为LatLon对象
      */
     public LatLng convertToLatLng(LatLonPoint latLonPoint) {
         return new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude());
     }
-
 
     /**
      * 逆地理编码查询回调
@@ -293,7 +271,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         isFirstLoad = false;
     }
 
-
     /**
      * 开始进行poi搜索
      * 通过经纬度获取附近的poi信息
@@ -319,7 +296,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -343,7 +319,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
 
                     List<SuggestionCity> suggestionCities = poiResult
                             .getSearchSuggestionCitys();// 当搜索不到poiitem数据时，会返回含有搜索关键字的城市信息
-
 
                     //搜索到数据
                     if (poiItems != null && poiItems.size() > 0) {
@@ -381,7 +356,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
 
     }
 
-
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
@@ -403,7 +377,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mFinalChoosePosition.latitude, mFinalChoosePosition.longitude), 20));
     }
 
-
     /**
      * poi没有搜索到数据，返回一些推荐城市的信息
      */
@@ -415,7 +388,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
                     + cities.get(i).getAdCode() + "\n";
         }
         ToastUtil.show(this, infomation);
-
     }
 
     @Override
@@ -457,7 +429,6 @@ public class ShareLocationActivity extends Activity implements GeocodeSearch.OnG
             ToastUtil.show(this, "请选择地址");
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -32,18 +32,14 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
     private EditText content;
     private ListView listView;
     private SearchAdapter adapter;
-
     private ArrayList<SearchAddressInfo> mData = new ArrayList<>();
     private String searchText;
-
-
     private LatLonPoint lp;//
     private PoiResult poiResult; // poi返回的结果
     private List<PoiItem> poiItems;// poi数据
     private int currentPage = 0;// 当前页面，从0开始计数
     private PoiSearch.Query query;// Poi查询条件类
     private PoiSearch poiSearch;
-
     private String city;
     private ProgressDialog progressDialog;
 
@@ -93,7 +89,6 @@ public class SearchAddressActivity extends AppCompatActivity implements View.OnC
             doSearchQueryByKeyWord(searchText);
         }
     }
-
 
     /**
      * 按照关键字搜索附近的poi信息
