@@ -27,6 +27,13 @@ android {
             keyPassword "android"
         }
 
+        release {
+            storeFile file("/Users/Fussen/bodyplus/keysecret/app_release.jks")
+            storePassword "android"
+            keyAlias "fussen"
+            keyPassword "android"
+        }
+
     }
 }
 

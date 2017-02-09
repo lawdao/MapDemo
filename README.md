@@ -27,14 +27,14 @@
 
 ## 代码实现及步骤
 ### 1. 首页获取定位信息
-	
-	
+
+
 
 ```
 public class MapUtils implements AMapLocationListener {
 	    private AMapLocationClient locationClient = null;  // 定位
 	    private AMapLocationClientOption locationOption = null;  // 定位设置
-	
+
 	    @Override
 	    public void onLocationChanged(AMapLocation aMapLocation) {
 	        mLonLatListener.getLonLat(aMapLocation);
@@ -43,9 +43,9 @@ public class MapUtils implements AMapLocationListener {
 	        locationClient = null;
 	        locationOption = null;
 	    }
-	
+
 	    private LonLatListener mLonLatListener;
-	
+
 	    public void getLonLat(Context context, LonLatListener lonLatListener) {
 	        locationClient = new AMapLocationClient(context);
 	        locationOption = new AMapLocationClientOption();
@@ -57,21 +57,21 @@ public class MapUtils implements AMapLocationListener {
 	        locationClient.setLocationOption(locationOption);// 设置定位参数
 	        locationClient.startLocation(); // 启动定位
 	    }
-	
+
 	    public interface LonLatListener {
 	        void getLonLat(AMapLocation aMapLocation);
 	    }
-	
+
 	}
-	
+
 ```
-	
+
 ### 2. 逆地理编码，经纬度转换
 **逆地理编码步骤：**
 
 1. 创建GeocodeSearch实例
 
-	
+
 
 ```
 	geocoderSearch = new GeocodeSearch(getApplicationContext());
@@ -79,13 +79,13 @@ public class MapUtils implements AMapLocationListener {
 
 2. 实现GeocodeSearch.OnGeocodeSearchListener监听
 
-	
+
 
 ```
 	//设置逆地理编码监听
 	   	geocoderSearch.setOnGeocodeSearchListener(this);
-	   	
-		
+
+
 		  /**
 		     * 逆地理编码查询回调
 		     *
@@ -94,27 +94,27 @@ public class MapUtils implements AMapLocationListener {
 		     */
 		    @Override
 		    public void onRegeocodeSearched(RegeocodeResult result, int i) {
-		
+
 		        if (i == 1000) {//转换成功
 		            if (result != null && result.getRegeocodeAddress() != null
 		                    && result.getRegeocodeAddress().getFormatAddress() != null) {
 		                //拿到详细地址
 		                addressName = result.getRegeocodeAddress().getFormatAddress(); // 逆转地里编码不是每次都可以得到对应地图上的opi
-		
+
 		                //条目中第一个地址 也就是当前你所在的地址
 		                mAddressInfoFirst = new SearchAddressInfo(addressName, addressName, false, convertToLatLonPoint(mFinalChoosePosition));
-		
+
 		                //其实也是可以在这就能拿到附近的兴趣点的
-		
+
 		            } else {
 		                ToastUtil.show(this, "没有搜到");
 		            }
 		        } else {
 		            ToastUtil.showerror(this, i);
 		        }
-		
+
 		    }
-		
+
 		    /**
 		     * 地理编码查询回调
 		     *
@@ -123,11 +123,11 @@ public class MapUtils implements AMapLocationListener {
 		     */
 		    @Override
 		    public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
-	
+
 	    	}
-	    	
+
 ```
-	    	
+
 
 **通过RegeocodeResult拿到编码后的信息**
 
@@ -135,7 +135,7 @@ public class MapUtils implements AMapLocationListener {
 ### 3. 通过经纬度信息搜索poi
 
 
-  
+
 
 ```
   /**
@@ -163,11 +163,11 @@ public class MapUtils implements AMapLocationListener {
         }
     }
 ```
-    
+
 ### 4. 通过关键字搜索poi
 
 
-  
+
 
 ```
   /**
@@ -191,47 +191,47 @@ public class MapUtils implements AMapLocationListener {
         }
     }
 ```
-    
+
 **通过poiSearch.setOnPoiSearchListener(this)实现对搜索结果的监听，在onPoiSearched()，onPoiItemSearched()回调里处理返回的结果**
 
 ### 5. 处理拿到的poi信息
 
-	
+
 
 ```
 @Override
 	    public void onPoiSearched(PoiResult result, int rcode) {
-	
+
 	        if (rcode == 1000) {
 	            if (result != null && result.getQuery() != null) {// 搜索poi的结果
 	                if (result.getQuery().equals(query)) {// 是否是同一条
 	                    poiResult = result;
 	                    poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-	
+
 	                    List<SuggestionCity> suggestionCities = poiResult
 	                            .getSearchSuggestionCitys();// 当搜索不到poiitem数据时，会返回含有搜索关键字的城市信息
-	
+
 	                    //搜索到数据
 	                    if (poiItems != null && poiItems.size() > 0) {
-	
+
 	                        mData.clear();
-	
+
 	                        //先将 逆地理编码过的当前地址 也就是条目中第一个地址 放到集合中
 	                        mData.add(mAddressInfoFirst);
-	
+
 	                        SearchAddressInfo addressInfo = null;
-	
+
 	                        for (PoiItem poiItem : poiItems) {
-	
+
 	                            addressInfo = new SearchAddressInfo(poiItem.getTitle(), poiItem.getSnippet(), false, poiItem.getLatLonPoint());
-	
+
 	                            mData.add(addressInfo);
 	                        }
 	                        if (isHandDrag) {
 	                            mData.get(0).isChoose = true;
 	                        }
 	                        addressAdapter.notifyDataSetChanged();
-	
+
 	                    } else if (suggestionCities != null
 	                            && suggestionCities.size() > 0) {
 	                        showSuggestCity(suggestionCities);
@@ -244,14 +244,14 @@ public class MapUtils implements AMapLocationListener {
 	                Toast.makeText(this, "对不起，没有搜索到相关数据！", Toast.LENGTH_SHORT).show();
 	            }
 	        }
-	
+
 	    }
 ```
 
 ### 6. 移动地图
 1. 设置监听
 
-		
+
 
 ```
 	 //对amap添加移动地图事件监听器
@@ -260,7 +260,7 @@ public class MapUtils implements AMapLocationListener {
 
 2. 实现监听
 
-	
+
 
 ```
 	 /**
@@ -270,9 +270,9 @@ public class MapUtils implements AMapLocationListener {
 		     */
 		    @Override
 		    public void onCameraChange(CameraPosition cameraPosition) {
-		
+
 		    }
-		
+
 		    /**
 		     * 地图移动结束后调用
 		     *
@@ -280,19 +280,19 @@ public class MapUtils implements AMapLocationListener {
 		     */
 		    @Override
 		    public void onCameraChangeFinish(CameraPosition cameraPosition) {
-		
+
 		        //每次移动结束后地图中心的经纬度
 		        mFinalChoosePosition = cameraPosition.target;
-		
+
 		        centerImage.startAnimation(centerAnimation);
-		
-		
+
+
 		        if (isHandDrag || isFirstLoad) {//手动去拖动地图
-		
+
 		            // 开始进行poi搜索
 		            getAddressFromLonLat(cameraPosition.target);
 		            doSearchQueryByPosition();
-		
+
 		        } else if (isBackFromSearch) {
 		            //搜索地址返回后 拿到选择的位置信息继续搜索附近的兴趣点
 		            isBackFromSearch = false;
@@ -309,7 +309,7 @@ public class MapUtils implements AMapLocationListener {
 
 看到这里，你想要的基本就能实现了
 
-[Demo apk下载链接](http://dl.download.csdn.net/down11/20161102/146940987b9a97c47cff795ebb5a3a35.apk?response-content-disposition=attachment%3Bfilename%3D%22app-debug.apk%22&OSSAccessKeyId=9q6nvzoJGowBj4q1&Expires=1478097823&Signature=EwH0QVLBkVrQ%2BNDzMG35lmDKJLM%3D)
+[Demo apk下载链接](http://download.csdn.net/download/fussenyu/9671345)
 
 如果对你有用，请关注我们的微信公共号：AppCode
 
