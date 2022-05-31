@@ -305,14 +305,3 @@ public class MapUtils implements AMapLocationListener {
 	    	}
 ```
 
-### 9. 最后阐述
-
-看到这里，你想要的基本就能实现了
-
-[Demo apk下载链接](http://download.csdn.net/download/fussenyu/9671345)
-
-如果对你有用，请关注我们的微信公共号：AppCode
-
-扫码即可关注
-
-![](http://ww1.sinaimg.cn/large/65e4f1e6gw1f9btkbltksj2076076aaj.jpg)
